@@ -1,0 +1,61 @@
+apiVersion: skaffold/v4beta10
+kind: Config
+metadata:
+  name: blog
+build:
+  local:
+    push: false
+  artifacts:
+    - image: metabloit/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: 'src/**/*.js'
+          dest: .
+    - image: metabloit/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: '*.js'
+          dest: .
+    - image: metabloit/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: '*.js'
+          dest: .
+    - image: metabloit/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: '*.js'
+          dest: .
+    - image: metabloit/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: '*.js'
+          dest: .
+    - image: metabloit/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: '*.js'
+          dest: .
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+deploy:
+  kubectl: {}
